@@ -15,6 +15,14 @@ messageForm.addEventListener('submit', (e) => {
     }
 });
 
+// Enable sending on pressing Enter (Shift+Enter adds newline)
+messageInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        messageForm.dispatchEvent(new Event('submit'));
+    }
+});
+
 function displayMessage(message, type) {
     const messageBox = document.createElement('div');
     messageBox.classList.add('message-box');
@@ -60,7 +68,6 @@ function getBotResponse(message) {
         return `The result is ${result}`;
     }
 
-    // Handle other math-related inputs
     if (lowerCaseMessage.includes('pi')) {
         return `The value of pi is approximately 3.14159`;
     } else if (lowerCaseMessage.includes('sqrt')) {
@@ -73,7 +80,6 @@ function getBotResponse(message) {
         }
     }
 
-    // Check intents
     for (const intent in intents) {
         for (const keyword of intents[intent]) {
             if (lowerCaseMessage.includes(keyword)) {
@@ -82,6 +88,5 @@ function getBotResponse(message) {
         }
     }
 
-    // Default response
     return 'I didn\'t understand that. Can you please rephrase?';
 }
